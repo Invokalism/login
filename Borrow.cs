@@ -154,7 +154,7 @@ namespace LoginAndSignup
             com1.Parameters.AddWithValue("@accession_number", no);
             com1.Parameters.AddWithValue("@title", txttitle.Text);
             com1.Parameters.AddWithValue("@author", txtauthor.Text);
-            com1.ExecuteNonQuery();
+            com1.ExecuteNonQuery(); 
 
             con.Close();
             loadDataGrid();
