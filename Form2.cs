@@ -176,5 +176,12 @@ namespace LoginAndSignup
             bb.Show();
             this.Hide();
         }
+
+        private void reportsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            reports rp = new reports();
+            rp.Show();
+            this.Hide();
+        }
     }
 }

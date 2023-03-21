@@ -27,32 +27,42 @@ namespace LoginAndSignup
             int no;
             int value = 1;
             no = int.Parse(txtno.Text);
+            string title = txttitle.Text;
+            string author = txtauthor.Text;
+            int num;
+            num = int.Parse(txtidnum.Text);
+            string fname = txtfname.Text;   
+            string lname = txtlname.Text;   
+            DateTime dt = DateTime.Now;
+            string sqlFormattedDate = dt.ToString("yyyy-MMMM-dd HH:mm:ss.fff");
+            string r = "BORROWED";
 
             int oldquantity = Convert.ToInt32(txtquantity.Text);
             int newquantity = oldquantity - value;
-            OleDbCommand com = new OleDbCommand("Update book SET Quantity= '" + newquantity + "', title= '" + txttitle.Text + "', author='" + txtauthor.Text + "'  where accession_number = '" + no + "'", con);
+            OleDbCommand com = new OleDbCommand("UPDATE book SET Quantity= '" + newquantity + "', title= '" + title + "', author='" + author + "'  WHERE accession_number = '" + no + "'", con);
             com.ExecuteNonQuery();
 
             con.Close();
             loadDataGrid();
 
             MessageBox.Show("Successfully UPDATED!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            con.Close();
             loadDataGrid();
 
             con.Open();
-            OleDbCommand com1 = new OleDbCommand("INSERT INTO records values (@id_num, @first_name, @last_name, @accesion_numer, @title, @author)", con);
-            com1.Parameters.AddWithValue("id_num", txtidnum.Text);
-            com1.Parameters.AddWithValue("first_name", txtfname.Text);
-            com1.Parameters.AddWithValue("last_name", txtlname.Text);
-            com1.Parameters.AddWithValue("accession_numer", no);
-            com1.Parameters.AddWithValue("title", txttitle.Text);
-            com1.Parameters.AddWithValue("author", txtauthor.Text);
-            com.ExecuteNonQuery();
+            OleDbCommand com1 = new OleDbCommand("INSERT INTO records ([date], [id_num], [first_name], [last_name], [book_num], [title], [author], [remarks]) VALUES (@date, @id_num, @first_name, @last_name, @book_num, @title, @author, @remarks)", con);
+            com1.Parameters.AddWithValue("@date", sqlFormattedDate);
+            com1.Parameters.AddWithValue("@id_num", num);
+            com1.Parameters.AddWithValue("@first_name", fname);
+            com1.Parameters.AddWithValue("@last_name", lname);
+            com1.Parameters.AddWithValue("@book_num", no);
+            com1.Parameters.AddWithValue("@title", title);
+            com1.Parameters.AddWithValue("@author", author);
+            com1.Parameters.AddWithValue("@remarks", r);
+            com1.ExecuteNonQuery();
 
             con.Close();
             loadDataGrid();
+
 
 
         }
@@ -133,11 +143,15 @@ namespace LoginAndSignup
             int no;
             int value = 1;
             no = int.Parse(txtno.Text);
-
+            string title = txttitle.Text;
+            string author = txtauthor.Text;
+            DateTime dt = DateTime.Now;
+            string sqlFormattedDate = dt.ToString("yyyy-MMMM-dd HH:mm:ss.fff");
+            string r = "RETURNED";
 
             int oldquantity = Convert.ToInt32(txtquantity.Text);
             int newquantity = oldquantity + value;
-            OleDbCommand com = new OleDbCommand("Update book SET Quantity= '" + newquantity + "', title= '" + txttitle.Text + "', author='" + txtauthor.Text + "'  where accession_number = '" + no + "'", con);
+            OleDbCommand com = new OleDbCommand("UPDATE book SET Quantity= '" + newquantity + "', title= '" + title + "', author='" + title + "'  WHERE accession_number = '" + no + "'", con);
             com.ExecuteNonQuery();
 
             con.Close();
@@ -147,19 +161,22 @@ namespace LoginAndSignup
             loadDataGrid();
 
             con.Open();
-            OleDbCommand com1 = new OleDbCommand("INSERT INTO records (id_num, first_name, last_name, accession_number, title, author) VALUES (@id_num, @first_name, @last_name, @accession_number, @title, @author)", con);
+            OleDbCommand com1 = new OleDbCommand("INSERT INTO records ([date], [id_num], [first_name], [last_name], [book_num], [title], [author], [remarks]) VALUES (@date, @id_num, @first_name, @last_name, @book_num, @title, @author, @remarks)", con);
+            com1.Parameters.AddWithValue("@date", sqlFormattedDate);
             com1.Parameters.AddWithValue("@id_num", txtidnum.Text);
             com1.Parameters.AddWithValue("@first_name", txtfname.Text);
             com1.Parameters.AddWithValue("@last_name", txtlname.Text);
-            com1.Parameters.AddWithValue("@accession_number", no);
-            com1.Parameters.AddWithValue("@title", txttitle.Text);
-            com1.Parameters.AddWithValue("@author", txtauthor.Text);
-            com1.ExecuteNonQuery(); 
+            com1.Parameters.AddWithValue("@book_num", no);
+            com1.Parameters.AddWithValue("@title", title);
+            com1.Parameters.AddWithValue("@author", author);
+            com1.Parameters.AddWithValue("@remarks", r);
+            com1.ExecuteNonQuery();
 
             con.Close();
             loadDataGrid();
 
-            
+
+
 
         }
 
@@ -193,6 +210,23 @@ namespace LoginAndSignup
             }
             reader.Close();
             con.Close();
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void reportsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            reports rp = new reports();
+            rp.Show();
+            this.Hide();
         }
     }
 }
